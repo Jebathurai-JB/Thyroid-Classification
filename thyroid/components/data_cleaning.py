@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 from thyroid.exception import ThyroidException
 from thyroid.logger import logging
+from sklearn.model_selection import train_test_split
 
 
 
@@ -41,7 +42,9 @@ class DataCleaning:
 	def fill_not_measured_values(self, thyroid_data, columns):
 		try:
 			thyroid_data.replace(['?'], np.nan, inplace=True)
-			thyroid_data[columns].fillna(0, inplace=True)
+			for column in columns:
+				thyroid_data[column].fillna(0, inplace=True)
+	
 			return thyroid_data
 
 		except Exception as e:
@@ -52,7 +55,7 @@ class DataCleaning:
 		try:
 			for column in columns:
 				thyroid_data[column] = thyroid_data[column].astype(dtype)
-
+	
 			return thyroid_data
 
 		except Exception as e:
@@ -73,6 +76,14 @@ class DataCleaning:
 		except Exception as e:
 			raise ThyroidException(e, sys)
 
+	def split_train_test_data(self, thyroid_data):
+		try:
+			train_data, test_data = train_test_split(thyroid_data, test_size=0.3, random_state=11)
+			return train_data, test_data
+
+		except Exception as e:
+			raise ThyroidException(e, sys)
+
 
 	def initiate_data_cleaning(self):
 
@@ -89,17 +100,18 @@ class DataCleaning:
 
 			columns = ['age', 'TSH', 'T3', 'TT4', 'T4U', 'FTI', 'TBG']
 			thyroid_data = self.change_column_dtypes(thyroid_data, columns=columns, dtype=float)
-			print(thyroid_data.dtypes)
-			print(thyroid_data.shape)
+
 			thyroid_data = self.remove_outliers(thyroid_data, columns=columns, threshold=self.outlier_threshold)
-			print(thyroid_data.shape)
+
+			thyroid_data.reset_index(drop=False, inplace=False)
+
+			training_data, testing_data = self.split_train_test_data(thyroid_data)
 
 			clean_data_dir = os.path.join(os.getcwd(), 'Data/clean_data')
 			os.makedirs(clean_data_dir, exist_ok=True)
 
-			thyroid_data.reset_index(drop=False, inplace=False)
-
-			thyroid_data.to_csv(f'{clean_data_dir}/thyroid_data.csv', index=False, header=True)
+			training_data.to_csv(f'{clean_data_dir}/training_data.csv', index=False, header=True)
+			testing_data.to_csv(f'{clean_data_dir}/testing_data.csv', index=False, header=True)
 
 			return clean_data_dir
 

@@ -1,6 +1,7 @@
 import pymongo
 from thyroid.components.data_ingestion import DataIngestion
 from thyroid.components.data_cleaning import DataCleaning
+from thyroid.components.data_transformation import DataTransformation
 # from thyroid.components.model_training import ModelTrainer
 
 database_name = "Thyroid_database"
@@ -16,3 +17,6 @@ if __name__ == "__main__":
 
 	data_cleaning = DataCleaning(raw_data_path=raw_data_path)
 	clean_data_path = data_cleaning.initiate_data_cleaning()
+
+	data_transformation = DataTransformation(clean_data_path=clean_data_path)
+	transformed_data_path = data_transformation.initiate_data_transformation()

@@ -28,7 +28,7 @@ class DataIngestion:
 			raw_data_dir = os.path.join(os.getcwd(), 'Data/raw_data')
 			os.makedirs(raw_data_dir, exist_ok=True)
 
-			thyroid_data = pd.concat([hypothyroid_data, hypothyroid_data], ignore_index=True)
+			thyroid_data = pd.concat([hyperthyroid_data, hypothyroid_data], ignore_index=True)
 			thyroid_data.reset_index(drop=False, inplace=False)
 
 			logging.info(f'saving thyroid dataset in raw_data directory')
