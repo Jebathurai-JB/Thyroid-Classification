@@ -23,7 +23,6 @@ class DataIngestion:
 			logging.info(f'exporting hypothyroid data as dataframe from mongodb database')
 			hypothyroid_data = pd.DataFrame(list(self.mongo_client[self.database_name][self.collection_name2].find()))
 
-
 			logging.info(f'creating a data directory')
 			raw_data_dir = os.path.join(os.getcwd(), 'Data/raw_data')
 			os.makedirs(raw_data_dir, exist_ok=True)
