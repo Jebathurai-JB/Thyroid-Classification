@@ -7,7 +7,7 @@ from thyroid.components.model_training import ModelTrainer
 
 database_name = "Thyroid_database"
 collection_name = "hyperthyroid_data"
-mongo_client = pymongo.MongoClient("mongodb+srv://Nelson_1601:<password>@cluster0.nxxmtd3.mongodb.net/?retryWrites=true&w=majority")
+mongo_client = pymongo.MongoClient("mongodb+srv://Nelson_1601:nelson1601@cluster0.nxxmtd3.mongodb.net/?retryWrites=true&w=majority")
 
 
 if __name__ == "__main__":
